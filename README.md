@@ -4,7 +4,7 @@
 ```
 composer require phptool/vbot
 ```
-
+使用时配置
 ```php
 config['is_multi'] 启用变动监听
 ```
