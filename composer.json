@@ -11,8 +11,8 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "HanSon",
-            "email": "h@hanc.cc"
+            "name": "ben",
+            "email": "benhuang1024@gmail.com"
         }
     ],
     "bin": ["bin/vbot"],
