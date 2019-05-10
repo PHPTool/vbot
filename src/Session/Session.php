@@ -21,16 +21,17 @@ class Session
         return bin2hex(random_bytes(3));
     }
 
-    public function currentSession()
+    public function currentSession($variable_key = '')
     {
         $arguments = getopt(null, ['session::']);
 
-        return isset($arguments['session']) && $arguments['session'] ? $arguments['session'] :
+        $session_key = $arguments['session'] . $variable_key;
+        return isset($session_key) && $session_key ? $session_key :
             $this->vbot->config->get('session', $this->randomKey());
     }
 
     public function has($session)
     {
-        return $this->vbot->cache->has('session.'.$session);
+        return $this->vbot->cache->has('session.' . $session);
     }
 }

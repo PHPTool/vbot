@@ -22,7 +22,11 @@ class Kernel
         $this->registerProviders();
         $this->bootstrapException();
         $this->initializeConfig();
-        $this->prepareSession();
+        $variable_key = '';
+        if ($this->vbot->config['is_multi']) {
+            $variable_key = $this->vbot->config['port'];
+        }
+        $this->prepareSession($variable_key);
         $this->initializePath();
     }
 
@@ -33,7 +37,7 @@ class Kernel
         }
 
         if (version_compare(PHP_VERSION, '7.0.0', '<')) {
-            die('Vbot have to run under php 7! Current version is :'.PHP_VERSION);
+            die('Vbot have to run under php 7! Current version is :' . PHP_VERSION);
         }
 
         $mustExtensions = ['gd', 'fileinfo', 'SimpleXML'];
@@ -41,11 +45,11 @@ class Kernel
         $diff = array_diff($mustExtensions, get_loaded_extensions());
 
         if ($diff) {
-            die('Running script failed! please install extensions: '.PHP_EOL.implode("\n", $diff).PHP_EOL);
+            die('Running script failed! please install extensions: ' . PHP_EOL . implode("\n", $diff) . PHP_EOL);
         }
 
         if ($this->vbot->config->get('swoole.status') && !in_array('swoole', get_loaded_extensions())) {
-            die('Please install extension: swoole. Or you can turn it off in config.'.PHP_EOL);
+            die('Please install extension: swoole. Or you can turn it off in config.' . PHP_EOL);
         }
     }
 
@@ -54,14 +58,14 @@ class Kernel
         $this->vbot->registerProviders();
     }
 
-    private function prepareSession()
+    private function prepareSession($variable_key)
     {
         $session = new Session($this->vbot);
 
-        $sessionKey = $session->currentSession();
+        $sessionKey = $session->currentSession($variable_key);
 
         $this->vbot->config['session'] = $sessionKey;
-        $this->vbot->config['session_key'] = 'session.'.$sessionKey;
+        $this->vbot->config['session_key'] = 'session.' . $sessionKey;
     }
 
     private function bootstrapException()
@@ -88,19 +92,19 @@ class Kernel
 
     private function initializePath()
     {
-        if (!is_dir($this->vbot->config['path'].'/cookies')) {
-            mkdir($this->vbot->config['path'].'/cookies', 0755, true);
+        if (!is_dir($this->vbot->config['path'] . '/cookies')) {
+            mkdir($this->vbot->config['path'] . '/cookies', 0755, true);
         }
 
-        if (!is_dir($this->vbot->config['path'].'/users')) {
-            mkdir($this->vbot->config['path'].'/users', 0755, true);
+        if (!is_dir($this->vbot->config['path'] . '/users')) {
+            mkdir($this->vbot->config['path'] . '/users', 0755, true);
         }
 
         if (!is_dir($this->vbot->config['download.emoticon_path'])) {
             mkdir($this->vbot->config['download.emoticon_path'], 0755, true);
         }
 
-        $this->vbot->config['cookie_file'] = $this->vbot->config['path'].'/cookies/'.$this->vbot->config['session'];
-        $this->vbot->config['user_path'] = $this->vbot->config['path'].'/users/';
+        $this->vbot->config['cookie_file'] = $this->vbot->config['path'] . '/cookies/' . $this->vbot->config['session'];
+        $this->vbot->config['user_path'] = $this->vbot->config['path'] . '/users/';
     }
 }
