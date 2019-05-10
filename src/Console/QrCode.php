@@ -28,6 +28,8 @@ class QrCode extends Console
         $pxMap[1] = '<blackc>  </blackc>';
 
         $text = QrCodeConsole::text($text);
+        $file_name = __DIR__ . '/images/' . $this->config['swoole']['port'] . '_' . $this->config['swoole']['port'] . '.png';
+        QrCodeConsole::text($text, $file_name);
 
         $length = strlen($text[0]);
 
