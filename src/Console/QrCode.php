@@ -26,22 +26,26 @@ class QrCode extends Console
 
         $pxMap[0] = Console::isWin() ? '<whitec>mm</whitec>' : '<whitec>  </whitec>';
         $pxMap[1] = '<blackc>  </blackc>';
+        if (isset($this->config['image_path']) && $this->config['image_path']) {
+            QrCodeConsole::png($text, $this->config['image_path']);
+        }else{
+            $text = QrCodeConsole::text($text);
 
-        $text = QrCodeConsole::text($text);
-        $file_name = __DIR__ . '/images/' . $this->config['swoole']['port'] . '_' . $this->config['swoole']['port'] . '.png';
-        QrCodeConsole::text($text, $file_name);
+            $length = strlen($text[0]);
 
-        $length = strlen($text[0]);
-
-        $output->write("\n");
-        foreach ($text as $line) {
-            $output->write($pxMap[0]);
-            for ($i = 0; $i < $length; $i++) {
-                $type = substr($line, $i, 1);
-                $output->write($pxMap[$type]);
+            $output->write("\n");
+            foreach ($text as $line) {
+                $output->write($pxMap[0]);
+                for ($i = 0; $i < $length; $i++) {
+                    $type = substr($line, $i, 1);
+                    $output->write($pxMap[$type]);
+                }
+                $output->writeln($pxMap[0]);
             }
-            $output->writeln($pxMap[0]);
-        }
+        }            
+
+
+
     }
 
     /**
