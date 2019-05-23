@@ -1,4 +1,4 @@
-基于 Hanson/vbot 改版
+基于 Hanson/vbot 改版，微信网页登录
 
 使用方式
 ```
